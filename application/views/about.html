@@ -1,0 +1,35 @@
+<html>
+
+<head>
+
+<title>#title#</title>
+
+</head>
+
+<body>
+
+<h3>Hello #name#!</h3>
+
+<p>This is the about page. and this is an variable: #what#.</p>
+
+<?php
+
+
+$file = file_get_contents(VIEWS . "/includes/myfile.txt");
+$file_content = explode("---", $file);
+?>
+
+title:
+<h1><?=$file_content[0];?></h1>
+
+
+body:
+<p><?=$file_content[1];?></p>
+
+
+posted:
+<p><?=$file_content[2];?></p>
+
+</body>
+
+</html>

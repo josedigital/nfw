@@ -1,0 +1,41 @@
+<?php
+
+$input = new stdClass();
+
+// loop through your array while re-assigning the values
+foreach ($_POST as $key => $value)
+{
+    $input->$key = $value;
+}
+
+
+// CONTACT FORM
+if(isset($input->contactsubmit)) :
+
+
+	// if nothing in the subject field, proceed
+	if(!isset($input->lastname) || strlen(trim($input->lastname)) == 0) :
+
+		$form = new ProcessForm();
+
+		$input->sendemail = 1;
+		$input->mkpage = 0;
+
+		$input->confirmation = '<h3>Thank you for contacting me.</h3> <p>I will get back to you soon.</p>';
+
+		// foreach ($input as $key => $value) {
+		// 	echo $key . ' - ' . $value . '<br>';
+		// }
+
+		$data = $input;
+		$form->validate($data);
+
+	else :
+		die('yea, thanks.');
+	
+	endif;
+
+
+endif;
+
+// end contact form
