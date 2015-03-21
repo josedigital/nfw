@@ -2,4 +2,5 @@ application/config/config.php
 application/views/
 config.codekit
 static/sass/
+static/images/
 !application/views/home.html
