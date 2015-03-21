@@ -1,1 +1,3 @@
 application/config/config.php
+application/views/
+!application/views/home.html
