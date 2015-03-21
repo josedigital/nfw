@@ -1,7 +1,7 @@
 <?php
 /* define constants
 ======================================================================================= */
-define("BASE_URL","http://localhost/nanite");
+define("BASE_URL","http://localhost/nfw");
 define('ROOT', realpath(dirname(__FILE__)));
 define('SRC', ROOT . '/src');
 define('VIEWS', ROOT . '/application/views');
@@ -12,9 +12,8 @@ define('VIEWS', ROOT . '/application/views');
 
 /* include functions
 ======================================================================================= */
-include './application/config/config.php';
 include './functions.php';
-include './emailpage.php';
+
 
 
 
@@ -23,7 +22,6 @@ include './emailpage.php';
 /* autoload classes
 ======================================================================================= */
 function __autoload($class_name) {
-   
     
 		if (file_exists(SRC . '/' . $class_name . '.php')) {
         	include SRC . '/' . $class_name . '.php';
@@ -59,7 +57,10 @@ get('/', function() {
 post('/formsprocessor/', function() {
 	loadview('formsprocessor');
 });
-
+// get email messages = generate new pages from email
+get('/fetch/', function(){
+	include ROOT . '/emailpage.php';
+});
 
 
 /* create routes manually - using per page templates - variables declared here like controler
@@ -79,7 +80,6 @@ get('/about/', function() {
 /* create routes dynamically - read from views directory and/or subdirectories thereof
 ======================================================================================= */
 $pages = new DirectoryIterator(VIEWS);
-
 while($pages->valid()) 
 {
 	if(!$pages->isDir()) 
@@ -94,19 +94,37 @@ while($pages->valid())
 
 
 // create new iterator for each directory
-$subpages = new DirectoryIterator(VIEWS . '/contact');
-while($subpages->valid()) 
+$contactpages = new DirectoryIterator(VIEWS . '/contact');
+while($contactpages->valid()) 
 {
-	if(!$subpages->isDir()) 
+	if(!$contactpages->isDir()) 
 	{
-		$page = pathinfo($subpages->getFilename(), PATHINFO_FILENAME);
+		$page = pathinfo($contactpages->getFilename(), PATHINFO_FILENAME);
 		get('/contact/' . $page . '/', function() use ($page) {
 			loadview('contact/' . $page);
 		});
 	}
-	$subpages->next();
+	$contactpages->next();
 }
 
+
+
+
+// create new iterator for each directory
+$blogposts = new DirectoryIterator(VIEWS . '/blog');
+while($blogposts->valid()) 
+{
+	if(!$blogposts->isDir()) 
+	{
+		$page = pathinfo($blogposts->getFilename(), PATHINFO_FILENAME);
+		$pagename = explode('_',$page);
+		$blogpost = $pagename[1];
+		get('/blog/' . $blogpost . '/', function() use ($page) {
+			loadview('blog/' . $page);
+		});
+	}
+	$blogposts->next();
+}
 
 
 
@@ -118,7 +136,7 @@ get('/about/contact/', function() {
 		loadview('contact');
 });
 
-
+// 404
 if (!Nanite::$routeProccessed) {
     // 404 page here
     echo '404';

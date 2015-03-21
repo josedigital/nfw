@@ -1,1 +1,5 @@
+# prevents access to config.php
+<files config.php>
+order allow,deny
 deny from all
+</files>

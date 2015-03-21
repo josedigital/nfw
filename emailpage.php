@@ -1,8 +1,10 @@
 <?php
+// include config variables
+include './application/config/config.php';
 
-// Connect to a local pop3 server
-$mailbox = new fMailbox('pop3', $config['mail_server'], $config['mail_user'], $config['mail_pw']);
-$messages = $mailbox->listMessages();
+// Connect to a imap server
+$mailbox 		= 	new fMailbox('imap', $config['mail_server'], $config['mail_user'], $config['mail_pw']);
+$messages 		= 	$mailbox->listMessages();
 
 
 // Implement Parsedown
@@ -10,30 +12,45 @@ $pd = new Parsedown();
 
 /* PARSE MESSAGES
 ======================================================================== */
-	// number of messages
-	$num = count($messages);
+// number of messages
+$num = count($messages);
 
 
 foreach ($messages as $key => $value) :
 
 	// get message
 	$m = $mailbox->fetchMessage($key);
-	echo '<pre>'; print_r($m); echo '</pre>';
+	
 	// store variables
 	$title		=	$m['headers']['subject'];
 	$text		=	$m['text'];
 	$parts		=	explode("---", $text);
 
+	// handle attachments
+	if(isset($m['attachment'])) :
+		$ma 		=	$m['attachment'][0];
+		$maname		=	$ma['filename'];
+		$madata		=	$ma['data'];
+		
+		file_put_contents(ROOT . '/static/images/' . $maname, $madata);
+	endif;
+
+
 	// parse out $text from $parts
 	$slugurl	=	$parts[0];
 	$body		=	$pd->text($parts[1]); // use $pd to parse to markdown
+	$body		=	str_replace('"', '\"', $body); // delimt any double quotes inside the body
+	$body		=	str_replace('[[', '" . ', $body); // capture [[ ]] to allow helper functions in body
+	$body		=	str_replace(']]', ' . "', $body); // capture [[ ]] to allow helper functions in body
+
 
 	// parse slugurl
 	$slug		=	explode("/", $slugurl);
+	$dir		= $slug[1];
 	array_shift($slug); // remove first item since it is blank (all info before first /)
 	array_pop($slug); // remove last item since it is blank (all info after last /)
 
-	// get number of arguments in slug
+	// count number of arguments in slug
 	$numargs	=	count($slug);
 
 	// create subdirectory out of first item if more than one item in slug
@@ -49,10 +66,16 @@ foreach ($messages as $key => $value) :
 
 
 
-
-
-	// create pagename form last item in slug array
+	// create pagename from last item in slug array
 	$pagename	=	array_pop($slug);
+
+	// prepend unix timestamp if first argument is blog
+	$date 		= new DateTime();
+	$timestamp 	= $date->getTimestamp();
+	if($dir == 'blog') :
+		$pagename = $timestamp . '_' . $pagename;
+	endif;
+
 
 
 
@@ -63,16 +86,48 @@ foreach ($messages as $key => $value) :
 		$newpage = fopen(VIEWS . "/" . $pagename . ".html", "w") or die("Unable to open file!");
 	endif;
 
-	$newpagecontent = '<?php
+
+
+
+	// create template file
+	if($dir == 'blog') :
+		$newpagecontent = '<?php
+$title = "' . $title . '";
+$body = "' . $body . '";
+
+
+include(VIEWS . "/includes/blog.inc");?>';
+		fwrite($newpage, $newpagecontent);
+		fclose($newpage);
+	else :
+		$newpagecontent = '<?php
 $title = "' . $title . '";
 $body = "' . $body . '";
 
 
 include(VIEWS . "/includes/main.inc");?>';
-	fwrite($newpage, $newpagecontent);
-	fclose($newpage);
+		fwrite($newpage, $newpagecontent);
+		fclose($newpage);
+	endif;
 
 
 
+
+
+	// delete message after creating page
+	// $mailbox->deleteMessages($key);
 
 endforeach;
+
+
+
+
+$done = <<<EOT
+<html>
+	<body>
+		<h1>$num messages fetched.</h1>
+		<p>return to <a href="/">home</a>.</p>
+	</body>
+</html>
+EOT;
+echo $done;

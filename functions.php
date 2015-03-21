@@ -62,6 +62,17 @@ function loadview($view, $vars = NULL)
 }
 
 
+
+
+
+
+
+/* ********************* HELPER FUNCTIONS FOR TEMPLATES *********************
+**
+**	some functions to help add images and other things in templates
+**
+**************************************************************************** */
+
 /**
 *
 * THUMBNAILS
@@ -89,9 +100,36 @@ function thumbs($imagewrapper)
 
 }
 
+
+
 /**
 *
-* IMAGE
+* IMG
+* @param string name of image with extension
+*/
+
+function img($imagename) 
+{
+	$images = ROOT . '/static/images/';
+	$img = new DirectoryIterator($images);
+	$imgpath = BASE_URL . '/static/images/';
+	$filename = $imagename;
+
+	while($img->valid()) 
+	{
+		if($img->getFilename() == $filename) 
+		{
+			return '<img src="' . $imgpath . $filename . '" />';
+		}
+		$img->next();
+	}
+}
+
+
+
+/**
+*
+* JPG
 * @param string name of image without extension; assumes jpg
 */
 
@@ -106,7 +144,7 @@ function jpg($imagename)
 	{
 		if($img->getFilename() == $filename) 
 		{
-			echo '<img src="' . $imgpath . $filename . '" />';
+			return '<img src="' . $imgpath . $filename . '" />';
 		}
 		$img->next();
 	}
@@ -142,3 +180,25 @@ function getnav()
 
 }
 
+
+/**
+*
+* TIMEIT
+* 
+*/
+function starttime()
+{
+	$time = microtime();
+	$time = explode(' ', $time);
+	$time = $time[1] + $time[0];
+	$start = $time;
+}
+function endtime()
+{
+	// $time = microtime();
+	// $time = explode(' ', $time);
+	// $time = $time[1] + $time[0];
+	// $finish = $time;
+	// $total_time = round(($finish - $start), 4);
+	// echo 'Page generated in '.$total_time.' seconds.';
+}

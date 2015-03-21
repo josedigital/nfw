@@ -13,7 +13,16 @@
 <p>This is the about page. and this is an variable: #what#.</p>
 
 <?php
+// date_default_timezone_set("America/Chicago");
+// $date 		= new DateTime();
+// $timestamp 	= $date->getTimestamp();
 
+
+$str = '1272509157_this-is-my-filename';
+$fname = explode('_',$str);
+// echo $fname[0];
+// echo '<pre>'; print_r($fname); echo '</pre>';
+echo gmdate("d \of M Y @ H:i:s", $fname[0]);
 
 $file = file_get_contents(VIEWS . "/includes/myfile.txt");
 $file_content = explode("---", $file);
