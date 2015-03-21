@@ -45,7 +45,7 @@
 		<!-- Banner -->
 			<section id="banner">
 				<h2>nfw</h2>
-				<p>A simple starting point for projects based on Skel.</p>
+				<p>A simple website publishing publishing system.</p>
 				<ul class="actions">
 					<li><a href="#content" class="button special">Content</a></li>
 					<li><a href="#elements" class="button">Elements</a></li>
