@@ -1,7 +1,7 @@
 <?php
 /* define constants
 ======================================================================================= */
-define("BASE_URL","http://localhost/nfw");
+define("BASE_URL","http://ctm-c02p25d-m1/nfw");
 define('ROOT', realpath(dirname(__FILE__)));
 define('SRC', ROOT . '/src');
 define('VIEWS', ROOT . '/application/views');
@@ -59,7 +59,11 @@ post('/formsprocessor/', function() {
 });
 // get email messages = generate new pages from email
 get('/fetch/', function(){
-	include ROOT . '/emailpage.php';
+	include ROOT . '/application/logic/emailpage.php';
+});
+// get email messages = generate new section from email
+get('/fetch-sections/', function(){
+	include ROOT . '/application/logic/emailsection.php';
 });
 
 

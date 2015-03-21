@@ -26,7 +26,7 @@
 
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
-				<h1><a href="#">nfw</a></h1>
+				<h1><a href="#">emphatic</a></h1>
 				<nav id="nav">
 					<ul>
 						<li><a href="<?=BASE_URL;?>">Home</a></li>
@@ -44,12 +44,12 @@
 
 		<!-- Banner -->
 			<section id="banner">
-				<h2>nfw</h2>
+				<h2>emphatic</h2>
+				<p>email + php = automatic publishing</p>
 				<p>A simple website publishing publishing system.</p>
 				<ul class="actions">
-					<li><a href="#content" class="button special">Content</a></li>
-					<li><a href="#elements" class="button">Elements</a></li>
-					<li><a href="#grid" class="button alt">Grid System</a></li>
+					<li><a href="#content" class="button special">Download</a></li>
+					<li><a href="#grid" class="button alt">Documentation</a></li>
 				</ul>
 			</section>
 
