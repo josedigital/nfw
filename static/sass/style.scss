@@ -56,7 +56,7 @@
 		font-weight: $font-weight-bold;
 		line-height: 1em;
 		margin: 0 0 ($size-element-margin * 0.5) 0;
-		font-family: "Oswald";
+		font-family: "Lato", sans-serif;
 
 		a {
 			color: inherit;
@@ -710,10 +710,11 @@
 		&.alt {
 			background-color: transparent;
 			box-shadow: inset 0 0 0 ($size-border-width * 2) $color-border;
-			color: $color-fg-bold !important;
+			color: $color-accent-fg-bold !important;
+			border: 1px solid;
 
 			&:hover {
-				background-color: $color-border-bg;
+				background-color: $color-accent-border-bg;
 			}
 
 			&:active {
@@ -750,6 +751,12 @@
 		}
 	}
 
+
+	.inner {
+		position: relative;
+		z-index: 2;
+	}
+
 /* Header */
 
 	//body {
@@ -757,20 +764,52 @@
 		padding-top: 3em;
 	}
 
+	body.landing {
+		#skel-layers-wrapper {
+			padding-top: 0;
+		}
+	}
+
+	@include vendor-keyframes('reveal-header') {
+		0% { top: -5em; }
+		100% { top: 0; }
+	}
+
 	#header {
-		background: #444;
-		color: #fff;
+		background-color: #fff;
+		box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+		color: inherit;
 		cursor: default;
-		height: 3.25em;
+		height: 3em;
 		left: 0;
-		line-height: 3.25em;
+		line-height: 3em;
 		position: fixed;
 		top: 0;
 		width: 100%;
 		z-index: 10000;
 
-		h1 {
+		&.reveal {
+			@include vendor-property('animation', 'reveal-header 0.5s');
+		}
+
+		&.alt {
+			@include vendor-property('animation', 'none');
+			background-color: transparent;
+			box-shadow: none;
 			color: #fff;
+
+			h1 {
+				color: #fff;
+			}
+		}
+
+		&.reveal.alt {
+			nav > ul > li a:hover {
+				color: #fff;
+			}
+		}
+
+		h1 {
 			height: inherit;
 			left: 1.25em;
 			line-height: inherit;
@@ -806,12 +845,12 @@
 
 					a {
 						@include vendor-property('transition', 'color #{$duration-transition} ease-in-out');
-						color: #ccc;
+						color: $color-accent-bg;
 						display: inline-block;
 						text-decoration: none;
 
 						&:hover {
-							color: #fff;
+							color: $color-accent2-bg;
 						}
 					}
 
@@ -845,18 +884,37 @@
 		}
 	}
 
-/* Banner */
 
+/* Banner */
+	body {
+		background-color: 			#333;
+		background-image: 		url('images/overlay.png'), url('../images/main-banner2.jpg');
+		background-position:	top left,					center center;
+		background-repeat:		repeat,						no-repeat;		
+		background-size:		auto,						cover;
+		background-attachment:	scroll,	fixed;
+	}
+	.color-bg { background-color: $color-bg; }
 	#banner {
-		background: #f6f6f6;
-		background-attachment: scroll, fixed;
-		// background-image: url('images/overlays.png'), url('../images/main-banner.jpg');
-		background-image: url('../images/main-banner2.jpg');
-		background-position: center center;
-		background-size: cover;
-		padding: 8em 0;
-		text-align: center;
-		color: #fff;
+		@include padding(10em, 0, (1em, 0, 0, 0));
+		height: 100vh;
+		text-align: 			center;
+		color: 					#fff;
+		padding: 	14em 0 0;
+
+
+		&:after {
+			@include vendor-property('transition', 'opacity 2s ease-in-out');
+			background: darken($color-accent2-bg, 5);
+			content: '';
+			height: 100%;
+			left: 0;
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 1;
+		}
 
 		:last-child {
 			margin-bottom: 0;
@@ -874,6 +932,15 @@
 		p {
 			font-size: 1.5em;
 			margin-bottom: 1.75em;
+		}
+	}
+
+
+	body.is-loading {
+		#banner {
+			&:after {
+				opacity: 1.0;
+			}
 		}
 	}
 

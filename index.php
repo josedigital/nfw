@@ -1,7 +1,7 @@
 <?php
 /* define constants
 ======================================================================================= */
-define("BASE_URL","http://ctm-c02p25d-m1/nfw");
+define("BASE_URL","http://localhost/nfw");
 define('ROOT', realpath(dirname(__FILE__)));
 define('SRC', ROOT . '/src');
 define('VIEWS', ROOT . '/application/views');

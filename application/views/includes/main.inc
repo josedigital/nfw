@@ -9,7 +9,8 @@
 		<script src="<?=BASE_URL;?>/static/js/jquery.min.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/jquery.form.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/jquery.validate.min.js"></script>
-		<script src="<?=BASE_URL;?>/static/js/app.js"></script>
+		<script src="<?=BASE_URL;?>/static/js/jquery.scrollgress.min.js"></script>
+		<script src="<?=BASE_URL;?>/static/js/jquery.scrollex.min.js"></script>
 		<!--[if lte IE 8]><script src="<?=BASE_URL;?>/static/js/html5shiv.js"></script><![endif]-->
 		<script src="<?=BASE_URL;?>/static/js/jquery.scrolly.min.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/skel.min.js"></script>
@@ -21,20 +22,19 @@
 			<link rel="stylesheet" href="<?=BASE_URL;?>/static/css/style-xlarge.css" />
 		</noscript>
 	</head>
-	<body id="top">
+	<body class="landing">
 
 
 		<!-- Header -->
-			<header id="header" class="skel-layers-fixed">
-				<h1><a href="#">emphatic</a></h1>
+			<header id="header" class="alt skel-layers-fixed">
+				<h1><a href="#"><span class="icon fa-exclamation-circle"></span> emphatic</a></h1>
 				<nav id="nav">
 					<ul>
-						<li><a href="<?=BASE_URL;?>">Home</a></li>
-						<li><a href="<?=BASE_URL;?>/new-page/">New Page</a></li>
+						<li><a href="#main" class="scrolly">Get Started</a></li>
+						<li><a href="<?=BASE_URL;?>/new-page/">Documentation</a></li>
 						<li><a href="<?=BASE_URL;?>/markdown/">Markdown</a></li>
-						<li><a href="<?=BASE_URL;?>/bbb/">Test Page</a></li>
-						<li><a href="<?=BASE_URL;?>/contact/">Contact</a></li>
-						<!-- <li><a href="http://getskel.com" class="button special">Download</a></li> -->
+						<li><a href="<?=BASE_URL;?>/bbb/">FAQ</a></li>
+						<li><a href="http://getskel.com" class="button special">Download</a></li>
 					</ul>
 				</nav>
 			</header>
@@ -44,13 +44,20 @@
 
 		<!-- Banner -->
 			<section id="banner">
-				<h2>emphatic</h2>
-				<p>email + php = automatic publishing</p>
-				<p>A simple website publishing publishing system.</p>
-				<ul class="actions">
-					<li><a href="#content" class="button special">Download</a></li>
-					<li><a href="#grid" class="button alt">Documentation</a></li>
-				</ul>
+				<div class="inner">
+					<h2><span class="icon fa-exclamation-circle"></span></h2>
+					<h2>emphatic</h2>
+					<p>email + php = automatic publishing
+						<br>
+						quick and dirty and not fore everyone.
+					</p>
+					<!-- <p>when you'd rather have a beer than update your "old buddy"'s website.</p> -->
+					<!-- <p>when you'd rather have a beer than waste your time installing a cms.</p> -->
+					<ul class="actions">
+						<li><a href="#content" class="button special">Download</a></li>
+						<li><a href="#grid" class="button alt">Documentation</a></li>
+					</ul>
+				</div>
 			</section>
 
 
@@ -62,10 +69,10 @@
 
 
 
-
+	<div class="color-bg">
 		<!-- Main -->
-			<div id="main" class="container">
-
+			<div class="container">
+				<div id="main" class="inner">
 				<!-- Intro -->
 					<div class="row">
 						<section class="6u 12u$(medium)">
@@ -155,8 +162,8 @@
 				</section>
 
 
-
+				</div><!-- ./inner -->
 			</div><!-- /#main -->
-	
+	</div><!-- /.color-bg -->
 </body>
 </html>

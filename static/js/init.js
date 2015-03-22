@@ -6,36 +6,36 @@
 		reset: 'full',
 		breakpoints: {
 			global: {
-				href: 'http://ctm-c02p25d-m1/nfw/static/css/style.css',
+				href: 'http://localhost/nfw/static/css/style.css',
 				containers: 1400,
 				grid: { gutters: ['2em', 0] }
 			},
 			xlarge: {
 				media: '(max-width: 1680px)',
-				href: 'http://ctm-c02p25d-m1/nfw/static/css/style-xlarge.css',
+				href: 'http://localhost/nfw/static/css/style-xlarge.css',
 				containers: 1200
 			},
 			large: {
 				media: '(max-width: 1280px)',
-				href: 'http://ctm-c02p25d-m1/nfw/static/css/style-large.css',
+				href: 'http://localhost/nfw/static/css/style-large.css',
 				containers: 960,
 				grid: { gutters: ['1.5em', 0] },
 				viewport: { scalable: false }
 			},
 			medium: {
 				media: '(max-width: 980px)',
-				href: 'http://ctm-c02p25d-m1/nfw/static/css/style-medium.css',
+				href: 'http://localhost/nfw/static/css/style-medium.css',
 				containers: '90%'
 			},
 			small: {
 				media: '(max-width: 736px)',
-				href: 'http://ctm-c02p25d-m1/nfw/static/css/style-small.css',
+				href: 'http://localhost/nfw/static/css/style-small.css',
 				containers: '90%',
 				grid: { gutters: ['1.25em', 0] }
 			},
 			xsmall: {
 				media: '(max-width: 480px)',
-				href: 'http://ctm-c02p25d-m1/nfw/static/css/style-xsmall.css'
+				href: 'http://localhost/nfw/static/css/style-xsmall.css'
 			}
 		},
 		plugins: {
@@ -70,8 +70,9 @@
 	$(function() {
 
 		var	$window = $(window),
-			$body = $('body'),
-			$header = $('#header');
+			$body 	= $('body'),
+			$header = $('#header'),
+			$banner = $('#banner');
 
 		// Disable animations/transitions until the page has loaded.
 			$body.addClass('is-loading');
@@ -81,10 +82,39 @@
 			});
 
 
+		// Header.
+		// If the header is using "alt" styling and #banner is present, use scrollwatch
+		// to revert it back to normal styling once the user scrolls past the banner.
+			if ($header.hasClass('alt')
+			&&	$banner.length > 0) {
+
+				$window.on('load', function() {
+
+					$banner.scrollwatch({
+						delay:		0,
+						range:		0.98,
+						anchor:		'top',
+						on:			function() { $header.addClass('alt reveal'); },
+						off:		function() { $header.removeClass('alt'); }
+					});
+
+					skel.change(function() {
+
+						if (skel.isActive('medium'))
+							$banner.scrollwatchSuspend();
+						else
+							$banner.scrollwatchResume();
+
+					});
+
+				});
+
+			}
+
 		// Scrolly
 			$('.scrolly').scrolly({
 				speed: 1500,
-				offset: $header.outerHeight() - 3
+				offset: $header.outerHeight() - 100
 			});
 
 
@@ -105,6 +135,21 @@
 			});
 
 
-	});
+
+		// Scrollex
+			$('#banner .inner').scrollex({
+				scroll: function(progress) {
+
+				 // Set #foobar's background color to green when we scroll into it.
+					 $(this).css('opacity', 2 - (progress * 1.5));
+					 console.log( 1 - (progress * 1) );
+
+				}
+			});			
+
+
+
+
+	}); //end $(function)
 
 })(jQuery);

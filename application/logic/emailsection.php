@@ -38,21 +38,16 @@ foreach ($messages as $key => $value) :
 	// parse out $text from $parts
 	$body		=	$pd->text($text); 					// use $pd to parse to markdown
 	$body		=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
-	$body		=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
-	$body		=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body
+	$body		=	str_replace('[[', '<?php echo', $body); 	// capture [[ ]] to allow helper functions in body
+	$body		=	str_replace(']]', '?>', $body); 	// capture [[ ]] to allow helper functions in body
 
 
 
 	// write content to page 
-	$sectionfile = fopen(VIEWS . "/" . $section . ".html", "w") or die("Unable to open file!");
-
-
-
+	$sectionfile = fopen(VIEWS . "/sections/" . $section . ".html", "w") or die("Unable to open file!");
 
 	// create template file
-	$newpagecontent = '<?php
-$body = "' . $body . '";
-include(VIEWS . "/includes/' . $section . '.inc");?>';
+	$newpagecontent = $body;
 		fwrite($sectionfile, $newpagecontent);
 		fclose($sectionfile);
 

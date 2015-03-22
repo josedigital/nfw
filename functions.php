@@ -144,7 +144,7 @@ function jpg($imagename)
 	{
 		if($img->getFilename() == $filename) 
 		{
-			return '<img src="' . $imgpath . $filename . '" />';
+			return '<img src="' . $imgpath . $filename . '" alt="' . $filename . '" />';
 		}
 		$img->next();
 	}
