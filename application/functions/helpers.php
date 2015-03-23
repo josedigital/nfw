@@ -1,0 +1,236 @@
+<?php
+/* ********************* HELPER FUNCTIONS FOR TEMPLATES *********************
+**
+**	some functions to help add images and other things in templates
+**
+**************************************************************************** */
+
+/**
+*
+* THUMBNAILS
+* @param string tag to surround image e.g. li, div, span
+*/
+function thumbs($imagewrapper) 
+{
+
+	$images = ROOT . '/static/images/';
+	$thumbnails = $images . 'thumbs/';
+	$thumbs = new DirectoryIterator($thumbnails);
+	$thumbpath = BASE_URL . '/static/images/thumbs/';
+
+	while($thumbs->valid()) 
+	{
+
+		if($thumbs->getExtension() == 'jpg') 
+		{
+			#echo 'yes ' . $thumbs->getFilename() . '<br>';
+			echo '<' . $imagewrapper . '><img src="' . $thumbpath . $thumbs->getFilename() . '" /></' . $imagewrapper . '>';
+		}
+
+		$thumbs->next();
+	}
+
+}
+
+
+
+/**
+*
+* IMG
+* @param string name of image with extension
+*/
+
+function img($imagename) 
+{
+	$imgpath = BASE_URL . '/static/images/';
+	$filename = $imagename;
+	return '<img src="' . $imgpath . $filename . '" alt="" />';
+}
+
+
+
+/**
+*
+* JPG
+* @param string name of image without extension; assumes jpg
+*/
+
+function jpg($imagename) 
+{
+	$imgpath = BASE_URL . '/static/images/';
+	$filename = $imagename . '.jpg';
+	return '<img src="' . $imgpath . $filename . '" alt="' . $filename . '" />';
+}
+
+
+
+/**
+*
+* PDF
+* @param string name of pdf without extension; assumes pdf
+*/
+
+function pdf($file, $linktext) 
+{
+	$filepath = BASE_URL . '/static/pdf/';
+	$filename = $file . '.pdf';
+	return '<a href="'. $filepath . $filename .'">' . $linktext . '</a>';
+}
+
+
+
+
+
+/**
+*
+* YouTube
+* @param string url of youtube video
+*/
+
+function youtube($yurl) 
+{
+	$videoid = substr($yurl, strpos($yurl, "v=") + 2);
+	return '<div class="yt"></div><iframe width="420" height="315" src="https://www.youtube.com/embed/' . $videoid . '" frameborder="0" allowfullscreen></iframe><div>';
+}
+
+
+
+/**
+*
+* JS
+* @param resource path to js directory
+*/
+
+function js($path = NULL)
+{
+	$path = ROOT . '/static/js/';
+	$base_url = BASE_URL;
+	$files = new DirectoryIterator($path);
+	while($files->valid()) 
+	{
+		if(!$files->isDir()) 
+		{
+			echo "<script src=\"{$base_url}/static/js/{$files->getFilename()}\"></script>\n";
+		}
+		$files->next();
+	}	
+}
+
+
+/**
+*
+* SECTION
+* @param string section name
+*/
+
+function section($sectionname)
+{
+	include(VIEWS . "/sections/{$sectionname}.html");
+}
+
+
+
+
+/**
+*
+* BLOGPOSTS
+* @param string class
+* @param string id
+*/
+
+function blogposts($class=NULL,$id=NULL)
+{
+	// set class and id if not null
+	$c = ($class != NULL ? ' class="' . $class . '"' : '');
+	$i = ($id != NULL ? ' id="' . $id . '"' : '');
+
+	// start ul
+	echo '<ul' . $c . $i .'>' . "\n";
+
+	// create new iterator for directory
+	$blogposts = new DirectoryIterator(VIEWS . '/blog');
+	while($blogposts->valid())
+	{
+		if(!$blogposts->isDir()) 
+		{
+			$page = pathinfo($blogposts->getFilename(), PATHINFO_FILENAME);
+			$pagename = explode('_',$page);
+			echo '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+		}
+		$blogposts->next();
+	}
+
+	// end ul
+	echo '</ul>';
+}
+
+
+
+
+
+/**
+*
+* ARG
+* @param num uri segment
+*/
+
+function arg($n) {
+    $segs = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    return count($segs)>0&&count($segs)>=($n-1)?$segs[$n]:'';
+}
+
+
+
+
+
+/**
+*
+* NAV
+* @param string tag to surround image e.g. li, div, span
+*/
+function makenav()
+{
+	$dir_writable = substr(sprintf('%o', fileperms(VIEWS)), -4) == "0775" ? "true" : "false";
+	echo $dir_writable;
+}
+
+function getnav() 
+{
+	$pages = new DirectoryIterator(VIEWS);
+	
+	
+	while($pages->valid()) 
+	{
+		if(!$pages->isDir()) 
+		{
+			$page = pathinfo($pages->getFilename(), PATHINFO_FILENAME);
+			echo '<li><a href="' . BASE_URL . '/' . $page . '/">' . $page . '</a></li>';
+		}
+		$pages->next();
+
+	}
+
+}
+
+
+/**
+*
+* TIMEIT
+* 
+*/
+function starttime()
+{
+	$time = microtime();
+	$time = explode(' ', $time);
+	$time = $time[1] + $time[0];
+	$start = $time;
+}
+function endtime()
+{
+	$time = microtime();
+	$time = explode(' ', $time);
+	$time = $time[1] + $time[0];
+	$finish = $time;
+	$total_time = round(($finish - $start), 4);
+	echo 'Page generated in '.$total_time.' seconds.';
+}

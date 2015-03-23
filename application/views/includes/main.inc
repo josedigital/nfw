@@ -15,7 +15,7 @@
 		<script src="<?=BASE_URL;?>/static/js/jquery.scrolly.min.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/skel.min.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/skel-layers.min.js"></script>
-		<script src="<?=BASE_URL;?>/static/js/init.js"></script>
+		<script src="<?=BASE_URL;?>/static/js/xinit.js"></script>
 		<noscript>
 			<link rel="stylesheet" href="<?=BASE_URL;?>/static/css/skel.css" />
 			<link rel="stylesheet" href="<?=BASE_URL;?>/static/css/style.css" />
@@ -41,10 +41,8 @@
 
 
 
+			
 
-
-	
-	
 
 			<?php #you can include other files easily #include(VIEWS . '/includes/include.html'); ?>
 

@@ -12,7 +12,8 @@ define('VIEWS', ROOT . '/application/views');
 
 /* include functions
 ======================================================================================= */
-include './functions.php';
+include './application/functions/core.php';
+include './application/functions/helpers.php';
 
 
 
@@ -58,7 +59,7 @@ post('/formsprocessor/', function() {
 	loadview('formsprocessor');
 });
 // get email messages = generate new pages from email
-get('/fetch/', function(){
+get('/fetch-pages/', function(){
 	include ROOT . '/application/logic/emailpage.php';
 });
 // get email messages = generate new section from email

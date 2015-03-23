@@ -30,9 +30,38 @@ foreach ($messages as $key => $value) :
 	if(isset($m['attachment'])) :
 		$ma 		=	$m['attachment'][0];
 		$maname		=	$ma['filename'];
+		$maext		=	$ma['mimetype'];
 		$madata		=	$ma['data'];
 		
-		file_put_contents(ROOT . '/static/images/' . $maname, $madata);
+		switch ($maext) {
+			case 'image/jpeg':
+				file_put_contents(ROOT . '/static/images/' . $maname, $madata);
+				break;
+
+			case 'image/gif':
+				file_put_contents(ROOT . '/static/images/' . $maname, $madata);
+				break;
+
+			case 'image/png':
+				file_put_contents(ROOT . '/static/images/' . $maname, $madata);
+				break;
+
+			case 'text/css':
+				file_put_contents(ROOT . '/static/css/' . $maname, $madata);
+				break;
+
+			case 'application/x-javascript':
+				file_put_contents(ROOT . '/static/js/' . $maname, $madata);
+				break;
+
+			case 'application/pdf':
+				file_put_contents(ROOT . '/static/pdf/' . $maname, $madata);
+				break;
+
+			default:
+				# code...
+				break;
+		}
 	endif;
 
 
@@ -89,7 +118,7 @@ foreach ($messages as $key => $value) :
 
 
 	// handle markdown and shorttags
-	$body		=	$pd->text($bodi); 					// use $pd to parse to markdown
+	$body		=	$pd->text($bodi); 					// use $pd to parse markdown
 	$body		=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
 	$body		=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
 	$body		=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body

@@ -23,7 +23,9 @@ foreach ($messages as $key => $value) :
 	
 	// store variables
 	$section	=	$m['headers']['subject'];
-	$text		=	$m['text'];
+	$mtext		=	$m['text'];
+	$parts		=	explode("---", $mtext);
+	$text		=	$parts[0];
 
 	// handle attachments
 	if(isset($m['attachment'])) :
@@ -43,8 +45,15 @@ foreach ($messages as $key => $value) :
 
 
 
+	// create sections subdirectory if it does not exist
+	$subdirectory	=	VIEWS . '/sections/';
+	if (!file_exists($subdirectory))
+	{
+		mkdir($subdirectory, 0777, true) or die('cannot make directory');
+	}
+
 	// write content to page 
-	$sectionfile = fopen(VIEWS . "/sections/" . $section . ".html", "w") or die("Unable to open file!");
+	$sectionfile = fopen($subdirectory . $section . ".html", "w") or die("Unable to open file!");
 
 	// create template file
 	$newpagecontent = $body;
@@ -56,7 +65,7 @@ foreach ($messages as $key => $value) :
 
 
 	// delete message after creating page
-	// $mailbox->deleteMessages($key);
+	$mailbox->deleteMessages($key);
 
 endforeach;
 
