@@ -895,6 +895,14 @@
 		background-attachment:	scroll,	fixed;
 	}
 	.color-bg { background-color: $color-bg; }
+	
+	.blog-page {
+		#banner {
+			height: auto;
+			padding: 2em 0;
+		}
+	}
+
 	#banner {
 		@include padding(10em, 0, (1em, 0, 0, 0));
 		height: 100vh;

@@ -114,7 +114,7 @@
 		// Scrolly
 			$('.scrolly').scrolly({
 				speed: 1500,
-				offset: $header.outerHeight() - 100
+				offset: $header.outerHeight() - 90
 			});
 
 
@@ -137,11 +137,11 @@
 
 
 		// Scrollex
-			$('#banner .inner').scrollex({
+			$('.landing #banner .inner').scrollex({
 				scroll: function(progress) {
 
 				 // Set #foobar's background color to green when we scroll into it.
-					 $(this).css('opacity', 2 - (progress * 1.5));
+					 $(this).css('opacity', 2.75 - (progress * 1.5));
 					 console.log( 1 - (progress * 1) );
 
 				}

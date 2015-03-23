@@ -1,15 +1,16 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Nanite fw :: <?=$title;?></title>
+		<title>emphatic :: <?=$title;?></title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
-		<meta name="keywords" content="" />
+		<meta name="keywords" content="<?php if(isset($meta)) echo $meta; ?>" />
 
 		<script src="<?=BASE_URL;?>/static/js/jquery.min.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/jquery.form.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/jquery.validate.min.js"></script>
-		<script src="<?=BASE_URL;?>/static/js/app.js"></script>
+		<script src="<?=BASE_URL;?>/static/js/jquery.scrollgress.min.js"></script>
+		<script src="<?=BASE_URL;?>/static/js/jquery.scrollex.min.js"></script>
 		<!--[if lte IE 8]><script src="<?=BASE_URL;?>/static/js/html5shiv.js"></script><![endif]-->
 		<script src="<?=BASE_URL;?>/static/js/jquery.scrolly.min.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/skel.min.js"></script>
@@ -21,7 +22,7 @@
 			<link rel="stylesheet" href="<?=BASE_URL;?>/static/css/style-xlarge.css" />
 		</noscript>
 	</head>
-	<body id="top">
+	<body id="top" class="blog-page">
 
 
 		<!-- Header -->
@@ -40,21 +41,15 @@
 
 
 
-
 		<!-- Banner -->
 			<section id="banner">
-				<h2>emphatic</h2>
-				<p>email + php = automatic publishing</p>
-				<p>A simple website publishing publishing system.</p>
-				<ul class="actions">
-					<li><a href="#content" class="button special">Content</a></li>
-					<li><a href="#elements" class="button">Elements</a></li>
-					<li><a href="#grid" class="button alt">Grid System</a></li>
-				</ul>
+				<div class="inner">
+					<h2><?=$title;?></h2>
+					<p><?php if(isset($created)) echo $created;?></p>
+				</div>
 			</section>
 
 
-	
 	
 
 			<?php #you can include other files easily #include(VIEWS . '/includes/include.html'); ?>
@@ -62,9 +57,10 @@
 
 
 
-
+	<div class="color-bg">
+		<div class="container">
 		<!-- Main -->
-			<div id="main" class="container">
+			<div id="main" class="inner">
 
 				<!-- Intro -->
 					<div class="row">
@@ -94,7 +90,9 @@
 						<section class="9u 12u$(medium)">
 							
 							<h2><?=$title;?></h2>
-							<?=$body;?>
+							
+								<?=$body;?>
+								<p class="date-created"><?php if(isset($created)) echo $created;?></p>
 
 						</section>
 					</div>
@@ -173,5 +171,6 @@
 
 
 			</div><!-- /#main -->
-	
+		</div><!-- /.container -->
+	</div><!-- /.color-bg -->
 </body>

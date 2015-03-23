@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Nanite fw :: <?=$title;?></title>
+		<title>emphatic :: <?=$title;?></title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
-		<meta name="keywords" content="" />
+		<meta name="keywords" content="<?php if(isset($meta)) echo $meta; ?>" />
 
 		<script src="<?=BASE_URL;?>/static/js/jquery.min.js"></script>
 		<script src="<?=BASE_URL;?>/static/js/jquery.form.js"></script>
@@ -22,12 +22,12 @@
 			<link rel="stylesheet" href="<?=BASE_URL;?>/static/css/style-xlarge.css" />
 		</noscript>
 	</head>
-	<body class="landing">
+	<body class="page">
 
 
 		<!-- Header -->
-			<header id="header" class="alt skel-layers-fixed">
-				<h1><a href="#"><span class="icon fa-exclamation-circle"></span> emphatic</a></h1>
+			<header id="header" class="skel-layers-fixed">
+				<h1><a href="#">emphatic</a></h1>
 				<nav id="nav">
 					<ul>
 						<li><a href="#main" class="scrolly">Get Started</a></li>
@@ -41,24 +41,6 @@
 
 
 
-
-		<!-- Banner -->
-			<section id="banner">
-				<div class="inner">
-					<h2><span class="icon fa-exclamation-circle"></span></h2>
-					<h2>emphatic</h2>
-					<p>email + php = automatic publishing
-						<br>
-						quick and dirty and not fore everyone.
-					</p>
-					<!-- <p>when you'd rather have a beer than update your "old buddy"'s website.</p> -->
-					<!-- <p>when you'd rather have a beer than waste your time installing a cms.</p> -->
-					<ul class="actions">
-						<li><a href="#content" class="button special">Download</a></li>
-						<li><a href="#grid" class="button alt">Documentation</a></li>
-					</ul>
-				</div>
-			</section>
 
 
 	
@@ -76,7 +58,7 @@
 				<!-- Intro -->
 					<div class="row">
 						<section class="6u 12u$(medium)">
-							<h2><?=$title;?></h2>
+							
 							<?=$body;?>
 
 						</section>

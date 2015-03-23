@@ -36,65 +36,123 @@ foreach ($messages as $key => $value) :
 	endif;
 
 
-	// parse out $text from $parts
-	$slugurl	=	$parts[0];
-	$body		=	$pd->text($parts[1]); // use $pd to parse to markdown
-	$body		=	str_replace('"', '\"', $body); // delimt any double quotes inside the body
-	$body		=	str_replace('[[', '" . ', $body); // capture [[ ]] to allow helper functions in body
-	$body		=	str_replace(']]', ' . "', $body); // capture [[ ]] to allow helper functions in body
+	/* message format:
+			url: blog/his is my test slug
+			---
 
 
-	// parse slugurl
-	$slug		=	explode("/", $slugurl);
-	$dir		= $slug[1];
-	array_shift($slug); // remove first item since it is blank (all info before first /)
-	array_pop($slug); // remove last item since it is blank (all info after last /)
+			meta: this, is, my, meta, tags
+			---
 
-	// count number of arguments in slug
-	$numargs	=	count($slug);
 
-	// create subdirectory out of first item if more than one item in slug
-	if($numargs > 1) :
-		$subdirectory	=	VIEWS . '/' . array_shift($slug) . '/';
-		// create subdirectory if it does not exist
-		if (!file_exists($subdirectory))
-		{
-			mkdir($subdirectory, 0777, true);
+
+			body:
+			this is the body texto.
+			---
+
+
+
+			footer:what?
+	*/
+
+
+	// iterate through $parts
+	foreach ($parts as $part) :
+		// echo substr($part, strpos($part, ":") + 1) . '<br>';
+		$m = explode(':', $part, 2);
+
+		switch (trim($m[0])) {
+			case 'url':
+				$u   = trim($m[1]);
+				$url = str_replace(' ', '-', $u);
+				break;
+
+			case 'meta':
+				$meta = trim($m[1]);
+				break;
+
+			case 'body':
+				$bodi = $m[1];
+				break;
+
+			case 'footer':
+				$footer = $m[1];
+				break;
+			
+			default:
+				# code...
+				break;
 		}
 
-	endif;
+
+	endforeach;
 
 
-
-	// create pagename from last item in slug array
-	$pagename	=	array_pop($slug);
-
-	// prepend unix timestamp if first argument is blog
-	$date 		= new DateTime();
-	$timestamp 	= $date->getTimestamp();
-	if($dir == 'blog') :
-		$pagename = $timestamp . '_' . $pagename;
-	endif;
+	// handle markdown and shorttags
+	$body		=	$pd->text($bodi); 					// use $pd to parse to markdown
+	$body		=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
+	$body		=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
+	$body		=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body
 
 
 
 
-	// write content to page 
-	if($numargs > 1) :
+	// parse url if contains subdirectory
+	if (strpos($url,'/') !== false) :
+	
+    	$slugs		=	explode("/", $url);
+		$dir		= 	$slugs[0];
+		$slug 		= 	trim($slugs[1]);
+
+		// count number of sections in slug
+		$numargs	=	count($slugs);
+	
+		// create pagename from last item in slug array
+		$pagename	=	$slug;
+		
+		// create subdirectory if it does not exist
+		$subdirectory	=	VIEWS . '/' . $dir . '/';
+		if (!file_exists($subdirectory))
+		{
+			mkdir($subdirectory, 0777, true) or die('cannot make directory');
+		}
+
+		// prepend unix timestamp if first argument is blog
+		if($dir == 'blog') :
+			$date 		= new DateTime();
+			$timestamp 	= $date->getTimestamp();			
+			$pagename = $timestamp . '_' . $pagename;
+
+			// created date variable
+			$created  = gmdate("d \of M Y @ H:i:s", $timestamp);			
+		endif;
+
+		// create page in subdirectory
 		$newpage = fopen($subdirectory . $pagename . ".html", "w") or die("Unable to open file!");
+
 	else :
+		// just create normal page at VIEWS root
+		$pagename	=	trim($url);
 		$newpage = fopen(VIEWS . "/" . $pagename . ".html", "w") or die("Unable to open file!");
+
 	endif;
+	
+	
+
+
+
 
 
 
 
 	// create template file
-	if($dir == 'blog') :
+	if(isset($dir) && $dir == 'blog') :
 		$newpagecontent = '<?php
 $title = "' . $title . '";
+$meta = "' . $meta . '";
 $body = "' . $body . '";
-
+$created = "' . $created . '";
+$footer = "' . $footer . '";
 
 include(VIEWS . "/includes/blog.inc");?>';
 		fwrite($newpage, $newpagecontent);
@@ -102,13 +160,16 @@ include(VIEWS . "/includes/blog.inc");?>';
 	else :
 		$newpagecontent = '<?php
 $title = "' . $title . '";
+$meta = "' . $meta . '";
 $body = "' . $body . '";
-
+$footer = "' . $footer . '";
 
 include(VIEWS . "/includes/main.inc");?>';
 		fwrite($newpage, $newpagecontent);
 		fclose($newpage);
 	endif;
+
+
 
 
 
