@@ -140,12 +140,26 @@ function section($sectionname)
 
 function blogposts($class=NULL,$id=NULL)
 {
+	// init month vars
+	$jan = '';
+	$feb = '';
+	$mar = '';
+	$apr = '';
+	$may = '';
+	$jun = '';
+	$jul = '';
+	$aug = '';
+	$sep = '';
+	$oct = '';
+	$nov = '';
+	$dec = '';
+
 	// set class and id if not null
 	$c = ($class != NULL ? ' class="' . $class . '"' : '');
 	$i = ($id != NULL ? ' id="' . $id . '"' : '');
 
 	// start ul
-	echo '<ul' . $c . $i .'>' . "\n";
+	// echo '<ul' . $c . $i .'>' . "\n";
 
 	// create new iterator for directory
 	$blogposts = new DirectoryIterator(VIEWS . '/blog');
@@ -155,13 +169,105 @@ function blogposts($class=NULL,$id=NULL)
 		{
 			$page = pathinfo($blogposts->getFilename(), PATHINFO_FILENAME);
 			$pagename = explode('_',$page);
-			echo '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+
+			// get month
+			$month = date('F', $pagename[0]); // 1-12
+
+			switch ($month) {
+				case 'January':
+					$jan .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'February':
+					$feb .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'March':
+					$mar .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'April':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'May':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'June':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'July':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'August':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'September':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'October':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'November':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+
+				case 'December':
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					break;
+				
+				default:
+					# code...
+					break;
+			}
+			
 		}
 		$blogposts->next();
 	}
 
-	// end ul
-	echo '</ul>';
+	if($jan != '')
+		echo '<h3>January</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $jan . '</ul>';
+	if($feb != '')
+		echo '<h3>February</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $feb . '</ul>';
+	if($mar != '')
+		echo '<h3>March</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $mar . '</ul>';
+	if($apr != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $apr . '</ul>';
+	if($may != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $may . '</ul>';
+	if($jun != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $jun . '</ul>';
+	if($jul != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $jul . '</ul>';
+	if($aug != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $aug . '</ul>';
+	if($sep != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $sep . '</ul>';
+	if($oct != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $oct . '</ul>';
+	if($nov != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $nov . '</ul>';
+	if($dec != '')
+		echo '<h3>April</h3>',
+		'<ul' . $c . $i .'>' . "\n" . $dec . '</ul>';
+
 }
 
 
@@ -174,8 +280,12 @@ function blogposts($class=NULL,$id=NULL)
 * @param num uri segment
 */
 
+function getsegments() {
+    return explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+}
+ 
 function arg($n) {
-    $segs = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    $segs = getsegments();
     return count($segs)>0&&count($segs)>=($n-1)?$segs[$n]:'';
 }
 
@@ -204,7 +314,8 @@ function getnav()
 		if(!$pages->isDir()) 
 		{
 			$page = pathinfo($pages->getFilename(), PATHINFO_FILENAME);
-			echo '<li><a href="' . BASE_URL . '/' . $page . '/">' . $page . '</a></li>';
+			if($page != '')
+				echo '<li><a href="' . BASE_URL . '/' . $page . '/">' . $page . '</a></li>';
 		}
 		$pages->next();
 

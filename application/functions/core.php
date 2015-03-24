@@ -50,7 +50,7 @@ function post($route, $function)
 function loadview($view, $vars = NULL)
 {
 	// $template = new Template;
-	Template::load(VIEWS . "/" . $view);
+	Template::load($view);
 	if($vars != NULL)
 	{
 		foreach ($vars as $key => $value) 

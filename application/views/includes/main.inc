@@ -27,13 +27,14 @@
 
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
-				<h1><a href="#">emphatic</a></h1>
+				<h1><a href="<?=BASE_URL;?>">emphatic</a></h1>
 				<nav id="nav">
 					<ul>
-						<li><a href="#main" class="scrolly">Get Started</a></li>
+						<li><a href="<?=BASE_URL;?>/an-new-page/">Get Started</a></li>
 						<li><a href="<?=BASE_URL;?>/new-page/">Documentation</a></li>
-						<li><a href="<?=BASE_URL;?>/markdown/">Markdown</a></li>
-						<li><a href="<?=BASE_URL;?>/bbb/">FAQ</a></li>
+						<li><a href="<?=BASE_URL;?>/helpers/markdown/">Markdown</a></li>
+						<li><a href="<?=BASE_URL;?>/random/">FAQ</a></li>
+						<li><a href="<?=BASE_URL;?>/blog/this-is-my-test-slug/">Blog</a></li>
 						<li><a href="http://getskel.com" class="button special">Download</a></li>
 					</ul>
 				</nav>
@@ -42,7 +43,6 @@
 
 
 			
-
 
 			<?php #you can include other files easily #include(VIEWS . '/includes/include.html'); ?>
 

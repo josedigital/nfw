@@ -14,6 +14,7 @@ $pd = new Parsedown();
 ======================================================================== */
 // number of messages
 $num = count($messages);
+$atts = '';
 
 
 foreach ($messages as $key => $value) :
@@ -28,40 +29,48 @@ foreach ($messages as $key => $value) :
 
 	// handle attachments
 	if(isset($m['attachment'])) :
-		$ma 		=	$m['attachment'][0];
-		$maname		=	$ma['filename'];
-		$maext		=	$ma['mimetype'];
-		$madata		=	$ma['data'];
-		
-		switch ($maext) {
-			case 'image/jpeg':
-				file_put_contents(ROOT . '/static/images/' . $maname, $madata);
-				break;
 
-			case 'image/gif':
-				file_put_contents(ROOT . '/static/images/' . $maname, $madata);
-				break;
+		foreach($m['attachment'] as $ma) :
 
-			case 'image/png':
-				file_put_contents(ROOT . '/static/images/' . $maname, $madata);
-				break;
+			// $ma 		=	$m['attachment'][0];
+			$maname		=	$ma['filename'];
+			$maext		=	$ma['mimetype'];
+			$madata		=	$ma['data'];
 
-			case 'text/css':
-				file_put_contents(ROOT . '/static/css/' . $maname, $madata);
-				break;
+			$atts .=  '<li>' . $maname . '</li>';
+			
+			switch ($maext) {
+				case 'image/jpeg':
+					file_put_contents(ROOT . '/static/images/' . $maname, $madata);
+					break;
 
-			case 'application/x-javascript':
-				file_put_contents(ROOT . '/static/js/' . $maname, $madata);
-				break;
+				case 'image/gif':
+					file_put_contents(ROOT . '/static/images/' . $maname, $madata);
+					break;
 
-			case 'application/pdf':
-				file_put_contents(ROOT . '/static/pdf/' . $maname, $madata);
-				break;
+				case 'image/png':
+					file_put_contents(ROOT . '/static/images/' . $maname, $madata);
+					break;
 
-			default:
-				# code...
-				break;
-		}
+				case 'text/css':
+					file_put_contents(ROOT . '/static/css/' . $maname, $madata);
+					break;
+
+				case 'application/x-javascript':
+					file_put_contents(ROOT . '/static/js/' . $maname, $madata);
+					break;
+
+				case 'application/pdf':
+					file_put_contents(ROOT . '/static/pdf/' . $maname, $madata);
+					break;
+
+				default:
+					# code...
+					break;
+			}
+
+		endforeach;
+
 	endif;
 
 
@@ -211,12 +220,13 @@ endforeach;
 
 
 
-
+$baseurl = BASE_URL;
 $done = <<<EOT
 <html>
 	<body>
 		<h1>$num messages fetched.</h1>
-		<p>return to <a href="/">home</a>.</p>
+		<p>the following attachments were saved: <ul> $atts </ul> and are available with their respective <a href="$baseurl/helpers/functions">helper fucntions</a>.</p>
+		<p>return to <a href="$baseurl">home</a>.</p>
 	</body>
 </html>
 EOT;

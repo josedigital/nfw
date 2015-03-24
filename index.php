@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Chicago');
+$started_at = microtime(true);
 /* define constants
 ======================================================================================= */
 define("BASE_URL","http://localhost/nfw");
@@ -48,15 +50,15 @@ function __autoload($class_name) {
 // homepage route
 get('/', function() {
 	// using delegate method; vars are created in home.html
-	loadview('home');
+	loadview(VIEWS . '/home');
 });
 	// homepage route @ /home/
 	get('/home/', function() {
-		loadview('home');
+		loadview(VIEWS . '/home');
 	});
 // forms processor
 post('/formsprocessor/', function() {
-	loadview('formsprocessor');
+	loadview(VIEWS . '/formsprocessor');
 });
 // get email messages = generate new pages from email
 get('/fetch-pages/', function(){
@@ -68,77 +70,63 @@ get('/fetch-sections/', function(){
 });
 
 
-/* create routes manually - using per page templates - variables declared here like controler
+/* create routes manually - using per page templates - variables declared here like controller
 ======================================================================================= */
 // about page
 get('/about/', function() {
 	$about = array(
 		'title' 	=> 'About Us',
 		'name'		=> 'alex',
-		'what'		=> 'what was replaced by this text'
+		'what'		=> '#what# was replaced by this text'
 	);
-	loadview('about', $about);
+	loadview(VIEWS . '/about', $about);
 });
 
 
 
 /* create routes dynamically - read from views directory and/or subdirectories thereof
 ======================================================================================= */
-$pages = new DirectoryIterator(VIEWS);
-while($pages->valid()) 
+$ignore = array('.', '..', '.DS_Store', '.gitignore', '.git', '.svn', '.htaccess');
+$views = new RecursiveDirectoryIterator(VIEWS);
+foreach (new RecursiveIteratorIterator($views) as $filename => $file)
 {
-	if(!$pages->isDir()) 
+
+	// echo '<pre>'; print_r($filename); echo '</pre>';
+	if($file->getExtension() == 'html')
 	{
-		$page = pathinfo($pages->getFilename(), PATHINFO_FILENAME);
-		get('/' . $page . '/', function() use ($page) {
-			loadview($page);
+		
+		// get filename without extension
+		$f 			=	$file->getBasename('.html');
+		$fullpath	=	$file->getPath() . '/' . $f;
+		$getpath	=	str_replace(VIEWS.'/', '', $fullpath);
+
+		// blogposts
+		$blogpost	=	strstr($getpath, '_');
+		$blogpath	=	ltrim($blogpost, '_');
+		$blogpath	=	'blog/'.$blogpath;
+
+		// if it's under blog/ then use blogpath
+		$getpath 	= 	(arg(2) == 'blog') ? $blogpath : $getpath;
+
+		// set routes
+		get('/' . $getpath . '/', function() use ($fullpath) {
+			loadview($fullpath);
+		});
+		get('/' . $f . '/del/', function() use ($f) {
+			include ROOT . '/application/logic/deletepage.php';
 		});
 	}
-	$pages->next();
+
+
+
+	
 }
-
-
-// create new iterator for each directory
-$contactpages = new DirectoryIterator(VIEWS . '/contact');
-while($contactpages->valid()) 
-{
-	if(!$contactpages->isDir()) 
-	{
-		$page = pathinfo($contactpages->getFilename(), PATHINFO_FILENAME);
-		get('/contact/' . $page . '/', function() use ($page) {
-			loadview('contact/' . $page);
-		});
-	}
-	$contactpages->next();
-}
-
-
-
-
-// create new iterator for each directory
-$blogposts = new DirectoryIterator(VIEWS . '/blog');
-while($blogposts->valid()) 
-{
-	if(!$blogposts->isDir()) 
-	{
-		$page = pathinfo($blogposts->getFilename(), PATHINFO_FILENAME);
-		$pagename = explode('_',$page);
-		$blogpost = $pagename[1];
-		get('/blog/' . $blogpost . '/', function() use ($page) {
-			loadview('blog/' . $page);
-		});
-	}
-	$blogposts->next();
-}
-
-
-
 
 /* re-route pages manually - create new route for page that already exists
 ======================================================================================= */
 // contact page
 get('/about/contact/', function() {
-		loadview('contact');
+		loadview(VIEWS . '/contact');
 });
 
 // 404
@@ -146,3 +134,4 @@ if (!Nanite::$routeProccessed) {
     // 404 page here
     echo '404';
 }
+echo '<div class="container">page loaded in ' . (microtime(true) - $started_at) . ' seconds.<div>'; 

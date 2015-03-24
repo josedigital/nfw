@@ -27,14 +27,15 @@
 
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
-				<h1><a href="#">emphatic</a></h1>
+				<h1><a href="<?=BASE_URL;?>">emphatic</a></h1>
 				<nav id="nav">
 					<ul>
-						<li><a href="<?=BASE_URL;?>">Home</a></li>
-						<li><a href="<?=BASE_URL;?>/new-page/">New Page</a></li>
-						<li><a href="<?=BASE_URL;?>/markdown/">Markdown</a></li>
-						<li><a href="<?=BASE_URL;?>/bbb/">Test Page</a></li>
-						<li><a href="<?=BASE_URL;?>/contact/">Contact</a></li>
+						<li><a href="<?=BASE_URL;?>/an-new-page/">Get Started</a></li>
+						<li><a href="<?=BASE_URL;?>/new-page/">Documentation</a></li>
+						<li><a href="<?=BASE_URL;?>/helpers/markdown/">Markdown</a></li>
+						<li><a href="<?=BASE_URL;?>/random/">FAQ</a></li>
+						<li><a href="<?=BASE_URL;?>/blog/this-is-my-test-slug/">Blog</a></li>
+						<li><a href="http://getskel.com" class="button special">Download</a></li>
 					</ul>
 				</nav>
 			</header>
@@ -42,7 +43,7 @@
 
 
 		<!-- Banner -->
-			<section id="banner">
+			<section class="container">
 				<div class="inner">
 					<h2><?=$title;?></h2>
 					<p><?php if(isset($created)) echo $created;?></p>
@@ -52,7 +53,7 @@
 
 	
 
-			<?php #you can include other files easily #include(VIEWS . '/includes/include.html'); ?>
+			<?php #loadview(VIEWS . '/includes/include'); ?>
 
 
 
@@ -70,7 +71,8 @@
 									
 									<?php
 										blogposts('blog-posts','blog-posts');
-										echo 'arg = ' . arg(3);
+										// echo 'arg = ' . arg(3);
+										getnav();
 									?>
 									
 

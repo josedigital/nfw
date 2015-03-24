@@ -43,6 +43,10 @@ p {
   font-size: 1.2em;
   line-height: 1.75em; }
 
+p.warning {
+  padding: 1em;
+  background: rgba(255, 0, 0, 0.3); }
+
 h1, h2, h3, h4, h5, h6 {
   color: #666;
   font-weight: bold;
@@ -729,8 +733,8 @@ body.landing #skel-layers-wrapper {
 
 /* Banner */
 body {
-  background-color: #333;
-  background-image: url("images/overlay.png"), url("../images/main-banner2.jpg");
+  background-color: #e3e3e3;
+  background-image: url("images/overlays.png"), url("../images/main-banner3.jpg");
   background-position: top left,					center center;
   background-repeat: repeat,						no-repeat;
   background-size: auto,						cover;
@@ -747,7 +751,7 @@ body {
   padding: 11em 0 8em 0;
   height: 100vh;
   text-align: center;
-  color: #fff;
+  color: #1b2a31;
   padding: 14em 0 0; }
   #banner:after {
     -moz-transition: opacity 2s ease-in-out;
@@ -772,7 +776,7 @@ body {
     margin: 0 0 0.5em 0;
     padding: 0;
     font-family: 'Petit Formal Script', sans-serif;
-    color: #fff; }
+    color: #1b2a31; }
   #banner p {
     font-size: 1.5em;
     margin-bottom: 1.75em; }

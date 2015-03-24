@@ -18,7 +18,7 @@ class Template {
 
 	public static function publish() {
 
-			eval("?>".self::$template."<?php");
+			eval("?>".self::$template."<?php ?>");
 
 	}
 
