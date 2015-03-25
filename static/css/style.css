@@ -733,6 +733,9 @@ body.landing #skel-layers-wrapper {
 
 /* Banner */
 body {
+  background: #46667b; }
+
+body.landing {
   background-color: #e3e3e3;
   background-image: url("images/overlays.png"), url("../images/main-banner3.jpg");
   background-position: top left,					center center;

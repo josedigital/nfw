@@ -182,7 +182,6 @@ foreach ($messages as $key => $value) :
 
 
 
-
 	// create template file
 	if(isset($dir) && $dir == 'blog') :
 		$newpagecontent = '<?php
@@ -226,6 +225,7 @@ $done = <<<EOT
 	<body>
 		<h1>$num messages fetched.</h1>
 		<p>the following attachments were saved: <ul> $atts </ul> and are available with their respective <a href="$baseurl/helpers/functions">helper fucntions</a>.</p>
+		<p>view your page here: <a href="$baseurl/$url/">$url</a></p>
 		<p>return to <a href="$baseurl">home</a>.</p>
 	</body>
 </html>

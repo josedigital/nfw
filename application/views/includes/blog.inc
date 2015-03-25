@@ -29,26 +29,11 @@
 			<header id="header" class="skel-layers-fixed">
 				<h1><a href="<?=BASE_URL;?>">emphatic</a></h1>
 				<nav id="nav">
-					<ul>
-						<li><a href="<?=BASE_URL;?>/an-new-page/">Get Started</a></li>
-						<li><a href="<?=BASE_URL;?>/new-page/">Documentation</a></li>
-						<li><a href="<?=BASE_URL;?>/helpers/markdown/">Markdown</a></li>
-						<li><a href="<?=BASE_URL;?>/random/">FAQ</a></li>
-						<li><a href="<?=BASE_URL;?>/blog/this-is-my-test-slug/">Blog</a></li>
-						<li><a href="http://getskel.com" class="button special">Download</a></li>
-					</ul>
+					<?php section('header-nav'); ?>
 				</nav>
 			</header>
 
 
-
-		<!-- Banner -->
-			<section class="container">
-				<div class="inner">
-					<h2><?=$title;?></h2>
-					<p><?php if(isset($created)) echo $created;?></p>
-				</div>
-			</section>
 
 
 	
@@ -60,9 +45,15 @@
 
 	<div class="color-bg">
 		<div class="container">
+			
 		<!-- Main -->
 			<div id="main" class="inner">
+				<div class="-3u 9u 12u$(medium)">
+				<h2><?=$title;?></h2>
+				<p><?php if(isset($created)) echo $created;?></p>
+				</div>
 
+				<hr class="major">
 				<!-- Intro -->
 					<div class="row">
 						<section class="3u 6u(medium) 12u$(small)">
@@ -81,7 +72,7 @@
 						</section>
 						<section class="9u 12u$(medium)">
 							
-							<h2><?=$title;?></h2>
+
 							
 								<?=$body;?>
 								<p class="date-created"><?php if(isset($created)) echo $created;?></p>
