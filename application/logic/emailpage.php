@@ -1,4 +1,24 @@
 <?php
+/* message format:
+		url: blog/his is my test slug
+		---
+
+
+		meta: this, is, my, meta, tags
+		---
+
+
+
+		body:
+		this is the body texto.
+		---
+
+
+
+		footer:what?
+*/
+
+
 // include config variables
 include './application/config/config.php';
 
@@ -22,11 +42,8 @@ foreach ($messages as $key => $value) :
 
 	// get message
 	$m = $mailbox->fetchMessage($key);
-	
-	// store variables
-	$page['title']		=	$m['headers']['subject'];
-	$text				=	$m['text'];
-	$parts				=	explode("---", $text);
+
+
 
 	// handle attachments
 	if(isset($m['attachment'])) :
@@ -75,24 +92,13 @@ foreach ($messages as $key => $value) :
 	endif;
 
 
-	/* message format:
-			url: blog/his is my test slug
-			---
 
+	
+	// store variables
+	$page['title']		=	$m['headers']['subject'];
+	$text				=	$m['text'];
+	$parts				=	explode("---", $text);
 
-			meta: this, is, my, meta, tags
-			---
-
-
-
-			body:
-			this is the body texto.
-			---
-
-
-
-			footer:what?
-	*/
 
 
 	// iterate through $parts
