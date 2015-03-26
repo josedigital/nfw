@@ -14,7 +14,8 @@ $pd = new Parsedown();
 ======================================================================== */
 // number of messages
 $num = count($messages);
-$atts = '';
+$attachments = '';
+$page = array();
 
 
 foreach ($messages as $key => $value) :
@@ -23,9 +24,9 @@ foreach ($messages as $key => $value) :
 	$m = $mailbox->fetchMessage($key);
 	
 	// store variables
-	$title		=	$m['headers']['subject'];
-	$text		=	$m['text'];
-	$parts		=	explode("---", $text);
+	$page['title']		=	$m['headers']['subject'];
+	$text				=	$m['text'];
+	$parts				=	explode("---", $text);
 
 	// handle attachments
 	if(isset($m['attachment'])) :
@@ -37,7 +38,7 @@ foreach ($messages as $key => $value) :
 			$maext		=	$ma['mimetype'];
 			$madata		=	$ma['data'];
 
-			$atts .=  '<li>' . $maname . '</li>';
+			$attachments .=  '<li>' . $maname . '</li>';
 			
 			switch ($maext) {
 				case 'image/jpeg':
@@ -96,38 +97,22 @@ foreach ($messages as $key => $value) :
 
 	// iterate through $parts
 	foreach ($parts as $part) :
-		// echo substr($part, strpos($part, ":") + 1) . '<br>';
+		
 		$m = explode(':', $part, 2);
 
-		switch (trim($m[0])) {
-			case 'url':
-				$u   = trim($m[1]);
-				$url = str_replace(' ', '-', $u);
-				break;
-
-			case 'meta':
-				$meta = trim($m[1]);
-				break;
-
-			case 'body':
-				$bodi = $m[1];
-				break;
-
-			case 'footer':
-				$footer = $m[1];
-				break;
-			
-			default:
-				# code...
-				break;
+		// if the variable is url, trim it and replace spaces with -
+		if($m[0] == 'url')
+		{
+			$m[1] = trim($m[1]);
+			$m[1] = str_replace(' ', '-', $m[1]);
 		}
-
+		$page[trim($m[0])] = trim($m[1]);
 
 	endforeach;
 
 
 	// handle markdown and shorttags
-	$body		=	$pd->text($bodi); 					// use $pd to parse markdown
+	$body		=	$pd->text($page['body']); 			// use $pd to parse markdown
 	$body		=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
 	$body		=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
 	$body		=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body
@@ -136,9 +121,9 @@ foreach ($messages as $key => $value) :
 
 
 	// parse url if contains subdirectory
-	if (strpos($url,'/') !== false) :
+	if (strpos($page['url'],'/') !== false) :
 	
-    	$slugs		=	explode("/", $url);
+    	$slugs		=	explode("/", $page['url']);
 		$dir		= 	$slugs[0];
 		$slug 		= 	trim($slugs[1]);
 
@@ -170,13 +155,14 @@ foreach ($messages as $key => $value) :
 
 	else :
 		// just create normal page at VIEWS root
-		$pagename	=	trim($url);
+		$pagename	=	trim($page['url']);
 		$newpage = fopen(VIEWS . "/" . $pagename . ".html", "w") or die("Unable to open file!");
 
 	endif;
-	
-	
 
+
+		
+	
 
 
 
@@ -184,24 +170,19 @@ foreach ($messages as $key => $value) :
 
 	// create template file
 	if(isset($dir) && $dir == 'blog') :
-		$newpagecontent = '<?php
-$title = "' . $title . '";
-$meta = "' . $meta . '";
-$body = "' . $body . '";
-$created = "' . $created . '";
-$footer = "' . $footer . '";
-
-include(VIEWS . "/includes/blog.inc");?>';
+		$newpagecontent = "<?php\r\n";
+		foreach ($page as $key => $value) {
+			$newpagecontent .= "$".$key." = \"" . $value . "\";\r\n";
+		}
+		$newpagecontent .= "include(VIEWS . \"/includes/blog.inc\");?>";
 		fwrite($newpage, $newpagecontent);
 		fclose($newpage);
 	else :
-		$newpagecontent = '<?php
-$title = "' . $title . '";
-$meta = "' . $meta . '";
-$body = "' . $body . '";
-$footer = "' . $footer . '";
-
-include(VIEWS . "/includes/main.inc");?>';
+		$newpagecontent = "<?php\r\n";
+		foreach ($page as $key => $value) {
+			$newpagecontent .= "$".$key." = \"" . $value . "\";\r\n";
+		}
+		$newpagecontent .= "include(VIEWS . \"/includes/main.inc\");?>";
 		fwrite($newpage, $newpagecontent);
 		fclose($newpage);
 	endif;
@@ -219,12 +200,13 @@ endforeach;
 
 
 
-$baseurl = BASE_URL;
+$baseurl 	= BASE_URL;
+$url 		= $page['url'];
 $done = <<<EOT
 <html>
 	<body>
 		<h1>$num messages fetched.</h1>
-		<p>the following attachments were saved: <ul> $atts </ul> and are available with their respective <a href="$baseurl/helpers/functions">helper fucntions</a>.</p>
+		<p>the following attachments were saved: <ul> $attachments </ul> and are available with their respective <a href="$baseurl/helpers/functions">helper fucntions</a>.</p>
 		<p>view your page here: <a href="$baseurl/$url/">$url</a></p>
 		<p>return to <a href="$baseurl">home</a>.</p>
 	</body>
