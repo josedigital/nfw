@@ -1,9 +1,5 @@
 <?php
 /* message format:
-		url: blog/his is my test slug
-		---
-
-
 		meta: this, is, my, meta, tags
 		---
 
@@ -95,50 +91,53 @@ foreach ($messages as $key => $value) :
 
 	
 	// store variables
-	$page['title']		=	$m['headers']['subject'];
+	$subject			=	$m['headers']['subject'];
 	$text				=	$m['text'];
 	$parts				=	explode("---", $text);
 
+	// parse subject to get subdirectory, section and url
+	if (strpos($subject,'/') !== false) :
+		$slugs				=	explode("/", $subject);
+		$dir				= 	$slugs[0];
+		$page['title'] 		= 	trim($slugs[1]);
+		$page['url'] 		=	str_replace(' ', '-', $page['title']);
 
+	else :
+		// no subdirectory
+		$page['title'] 		= 	trim($subject);
+		$page['url'] 		=	str_replace(' ', '-', $page['title']);
 
-	// iterate through $parts
+	endif;
+	
+
+	
+	if($dir == 'section') 
+		$dir = 'sections';
+		$pagename = $page['url'];
+
+	
+	// iterate through $parts and save as key=>value in $page
 	foreach ($parts as $part) :
-		
+		if(count($parts)<2) break;
 		$m = explode(':', $part, 2);
-
-		// if the variable is url, trim it and replace spaces with -
-		if($m[0] == 'url')
-		{
-			$m[1] = trim($m[1]);
-			$m[1] = str_replace(' ', '-', $m[1]);
-		}
 		$page[trim($m[0])] = trim($m[1]);
 
 	endforeach;
 
 
+
+
 	// handle markdown and shorttags
-	$body		=	$pd->text($page['body']); 			// use $pd to parse markdown
+	$body		=	$pd->text($text); 			// use $pd to parse markdown
 	$body		=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
 	$body		=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
 	$body		=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body
+	$page['body'] = $body;
 
 
+	// if we have a subdirectory
+	if (isset($dir)) :
 
-
-	// parse url if contains subdirectory
-	if (strpos($page['url'],'/') !== false) :
-	
-    	$slugs		=	explode("/", $page['url']);
-		$dir		= 	$slugs[0];
-		$slug 		= 	trim($slugs[1]);
-
-		// count number of sections in slug
-		$numargs	=	count($slugs);
-	
-		// create pagename from last item in slug array
-		$pagename	=	$slug;
-		
 		// create subdirectory if it does not exist
 		$subdirectory	=	VIEWS . '/' . $dir . '/';
 		if (!file_exists($subdirectory))
@@ -146,30 +145,26 @@ foreach ($messages as $key => $value) :
 			mkdir($subdirectory, 0777, true) or die('cannot make directory');
 		}
 
-		// prepend unix timestamp if first argument is blog
+		// prepend unix timestamp if $dir is blog
 		if($dir == 'blog') :
 			$date 		= new DateTime();
 			$timestamp 	= $date->getTimestamp();			
-			$pagename = $timestamp . '_' . $pagename;
+			$pagename 	= $timestamp . '_' . $page['url'];
 
 			// created date variable
 			$created  = gmdate("d \of M Y @ H:i:s", $timestamp);			
 		endif;
+
 
 		// create page in subdirectory
 		$newpage = fopen($subdirectory . $pagename . ".html", "w") or die("Unable to open file!");
 
 	else :
 		// just create normal page at VIEWS root
-		$pagename	=	trim($page['url']);
-		$newpage = fopen(VIEWS . "/" . $pagename . ".html", "w") or die("Unable to open file!");
+		$pagename	=	$page['url'];
+		$newpage 	= 	fopen(VIEWS . "/" . $pagename . ".html", "w") or die("Unable to open file!");
 
 	endif;
-
-
-		
-	
-
 
 
 
@@ -183,6 +178,12 @@ foreach ($messages as $key => $value) :
 		$newpagecontent .= "include(VIEWS . \"/includes/blog.inc\");?>";
 		fwrite($newpage, $newpagecontent);
 		fclose($newpage);
+
+	elseif(isset($dir) && $dir == 'sections') :
+		$newpagecontent = $page['body'];
+		fwrite($newpage, $newpagecontent);
+		fclose($newpage);
+
 	else :
 		$newpagecontent = "<?php\r\n";
 		foreach ($page as $key => $value) {
@@ -195,10 +196,6 @@ foreach ($messages as $key => $value) :
 
 
 
-
-
-
-
 	// delete message after creating page
 	// $mailbox->deleteMessages($key);
 
@@ -207,7 +204,7 @@ endforeach;
 
 
 $baseurl 	= BASE_URL;
-$url 		= $page['url'];
+$url 		= (isset($dir)) ? $dir.'/'.$page['url'] : $page['url'];
 $done = <<<EOT
 <html>
 	<body>
