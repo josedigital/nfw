@@ -127,7 +127,7 @@ foreach ($messages as $key => $value) :
 
 
 	// handle markdown and shorttags
-	$body					=	$pd->text($text); 					// use $pd to parse markdown
+	$body					=	$pd->text($page['body']); 					// use $pd to parse markdown
 	$body					=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
 	$body					=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
 	$body					=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body
@@ -149,11 +149,11 @@ foreach ($messages as $key => $value) :
 		// prepend unix timestamp if $dir is blog
 		if($dir == 'blog') :
 			$date 			= 	new DateTime();
-			$timestamp 		= 	$date->getTimestamp();			
-			$pagename 		= 	$timestamp . '_' . $page['url'];
+			$timestamp 		= 	$date->getTimestamp();
+			// $pagename 		= 	$timestamp . '_' . $page['url'];
 
 			// created date variable
-			$page['created'] = 	gmdate("d \of M Y @ H:i:s", $timestamp);		
+			$page['created'] = 	gmdate("d \of M Y @ g:i:s", $timestamp);		
 		endif;
 
 
