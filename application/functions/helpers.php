@@ -142,7 +142,7 @@ function loadsection($sectionname)
 * @param string id
 */
 
-function blogposts($class=NULL,$id=NULL)
+function blogposts($dir=NULL,$id=NULL,$class=NULL)
 {
 	// init month vars
 	$jan = '';
@@ -158,14 +158,14 @@ function blogposts($class=NULL,$id=NULL)
 	$nov = '';
 	$dec = '';
 
-	// set class and id if not null
-	$c = ($class != NULL ? ' class="' . $class . '"' : '');
+	// set id, class, and directory if not null. if dir is null, /blog will be used.
 	$i = ($id != NULL ? ' id="' . $id . '"' : '');
-
+	$c = ($class != NULL ? ' class="' . $class . '"' : '');
+	$dir = ($dir != NULL ? $dir= VIEWS . '/' . $dir : $dir = VIEWS . '/blog');
 
 	$files = array();
 	// create new iterator for directory
-	$blogposts = new DirectoryIterator(VIEWS . '/blog');
+	$blogposts = new DirectoryIterator($dir);
 
 	foreach ($blogposts as $fileinfo)
 	{

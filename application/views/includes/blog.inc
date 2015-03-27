@@ -60,7 +60,7 @@
 
 								<div class="blog-archive">
 									
-									<?php blogposts('blog-posts','blog-posts'); ?>
+									<?php blogposts('blog', 'blog-posts','blog-posts'); ?>
 									<h3>Main Navigation</h3>
 									<?php section('header-nav'); ?>
 									
