@@ -60,11 +60,9 @@
 
 								<div class="blog-archive">
 									
-									<?php
-										blogposts('blog-posts','blog-posts');
-										// echo 'arg = ' . arg(3);
-										getnav();
-									?>
+									<?php blogposts('blog-posts','blog-posts'); ?>
+									<h3>Main Navigation</h3>
+									<?php section('header-nav'); ?>
 									
 
 								</div>
@@ -75,7 +73,11 @@
 
 							
 								<?=$body;?>
-								<p class="date-created"><?php if(isset($created)) echo $created;?></p>
+								<?php if(isset($created)) : ?>
+								<p class="date-created"> 
+									posted <?=$created;?>
+								</p>
+								<?php endif; ?>
 
 						</section>
 					</div>

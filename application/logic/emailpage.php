@@ -153,7 +153,7 @@ foreach ($messages as $key => $value) :
 			// $pagename 		= 	$timestamp . '_' . $page['url'];
 
 			// created date variable
-			$page['created'] = 	gmdate("d \of M Y @ g:i:s", $timestamp);		
+			$page['created'] = 	gmdate("d \of M Y @ g:i:s a", $timestamp);		
 		endif;
 
 

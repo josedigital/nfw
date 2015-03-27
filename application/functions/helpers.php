@@ -127,6 +127,11 @@ function section($sectionname)
 	include(VIEWS . "/sections/{$sectionname}.html");
 }
 
+function loadsection($sectionname)
+{
+	return file_get_contents(VIEWS . "/sections/{$sectionname}.html");
+}
+
 
 
 
