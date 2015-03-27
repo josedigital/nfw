@@ -112,6 +112,9 @@ foreach (new RecursiveIteratorIterator($views) as $filename => $file)
 		get('/' . $getpath . '/', function() use ($fullpath) {
 			loadview($fullpath);
 		});
+		get('/' . $getpath . '/del/', function() use ($fullpath) {
+			include ROOT . '/application/logic/deletepage.php';
+		});
 		get('/' . $f . '/del/', function() use ($f) {
 			include ROOT . '/application/logic/deletepage.php';
 		});
