@@ -115,8 +115,12 @@ foreach (new RecursiveIteratorIterator($views) as $filename => $file)
 		get('/' . $getpath . '/del/', function() use ($fullpath) {
 			include ROOT . '/application/logic/deletepage.php';
 		});
-		// get('/' . $f . '/del/', function() use ($f) {
-		// 	include ROOT . '/application/logic/deletepage.php';
+		// using routing below will allow all pages to be viewed at root level.
+		// so if using emphatic just for a microblog and you want it at root level
+		// use the router below to have all blog posts at root level e.g. www.yoursite.com/your-blog-post/
+		// note: all blog posts will reside in blog/ subdirectory. same goes for other subdir.
+		// get('/' . $f . '/', function() use ($fullpath) {
+		// 	loadview($fullpath);
 		// });
 	}
 

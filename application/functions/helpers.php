@@ -167,6 +167,7 @@ function blogposts($dir=NULL,$id=NULL,$class=NULL)
 	// create new iterator for directory
 	$blogposts = new DirectoryIterator($dir);
 
+	// save some file info into array to be able to sort by key, which is now the date modified.
 	foreach ($blogposts as $fileinfo)
 	{
 		if ($fileinfo->isFile())
@@ -175,6 +176,7 @@ function blogposts($dir=NULL,$id=NULL,$class=NULL)
 		}
 
 	}
+	// sort by key (date modified) to display newest first
 	krsort($files);
 	
 
