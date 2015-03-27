@@ -90,7 +90,7 @@ foreach ($messages as $key => $value) :
 
 
 	
-	// store variables
+	// get message text
 	$subject				=	$m['headers']['subject'];
 	$text					=	$m['text'];
 	$parts					=	explode("---", $text);
@@ -112,8 +112,8 @@ foreach ($messages as $key => $value) :
 
 	// change 'section' to 'sections' : easier on the user i think
 	if($dir == 'section') 
-		$dir 				= 'sections';
-		$pagename 			= $page['url'];
+		$dir 				= 	'sections';
+		$pagename 			= 	$page['url'];
 
 	
 	// iterate through $parts and save as key=>value in $page
@@ -127,7 +127,7 @@ foreach ($messages as $key => $value) :
 
 
 	// handle markdown and shorttags
-	$body					=	$pd->text($text); 			// use $pd to parse markdown
+	$body					=	$pd->text($text); 					// use $pd to parse markdown
 	$body					=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
 	$body					=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
 	$body					=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body
@@ -203,10 +203,10 @@ foreach ($messages as $key => $value) :
 endforeach;
 
 
-
-$baseurl 	= BASE_URL;
-$url 		= (isset($dir)) ? $dir.'/'.$page['url'] : $page['url'];
-$done = <<<EOT
+if($num > 0):
+	$baseurl 	= BASE_URL;
+	$url 		= (isset($dir)) ? $dir.'/'.$page['url'] : $page['url'];
+	$done 		= <<<EOT
 <html>
 <title>emphatic fetching email</title>
 	<body>
@@ -217,4 +217,7 @@ $done = <<<EOT
 	</body>
 </html>
 EOT;
+else:
+	$done 		= 'No Messages';
+endif;
 echo $done;
