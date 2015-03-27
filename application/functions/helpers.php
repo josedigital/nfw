@@ -23,7 +23,6 @@ function thumbs($imagewrapper)
 
 		if($thumbs->getExtension() == 'jpg') 
 		{
-			#echo 'yes ' . $thumbs->getFilename() . '<br>';
 			echo '<' . $imagewrapper . '><img src="' . $thumbpath . $thumbs->getFilename() . '" /></' . $imagewrapper . '>';
 		}
 
@@ -315,44 +314,3 @@ function makenav($nav=NULL)
 	}
 }
 
-function getnav() 
-{
-	$pages = new DirectoryIterator(VIEWS);
-	
-	
-	while($pages->valid()) 
-	{
-		if(!$pages->isDir()) 
-		{
-			$page = pathinfo($pages->getFilename(), PATHINFO_FILENAME);
-			if($page != '')
-				echo '<li><a href="' . BASE_URL . '/' . $page . '/">' . $page . '</a></li>';
-		}
-		$pages->next();
-
-	}
-
-}
-
-
-/**
-*
-* TIMEIT
-* 
-*/
-function starttime()
-{
-	$time = microtime();
-	$time = explode(' ', $time);
-	$time = $time[1] + $time[0];
-	$start = $time;
-}
-function endtime()
-{
-	$time = microtime();
-	$time = explode(' ', $time);
-	$time = $time[1] + $time[0];
-	$finish = $time;
-	$total_time = round(($finish - $start), 4);
-	echo 'Page generated in '.$total_time.' seconds.';
-}
