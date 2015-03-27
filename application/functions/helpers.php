@@ -158,78 +158,88 @@ function blogposts($class=NULL,$id=NULL)
 	$c = ($class != NULL ? ' class="' . $class . '"' : '');
 	$i = ($id != NULL ? ' id="' . $id . '"' : '');
 
-	// start ul
-	// echo '<ul' . $c . $i .'>' . "\n";
 
+	$files = array();
 	// create new iterator for directory
 	$blogposts = new DirectoryIterator(VIEWS . '/blog');
-	while($blogposts->valid())
-	{
-		if(!$blogposts->isDir()) 
-		{
-			$page = pathinfo($blogposts->getFilename(), PATHINFO_FILENAME);
-			$pagename = explode('_',$page);
 
-			// get month
-			$month = date('F', $pagename[0]); // 1-12
+	foreach ($blogposts as $fileinfo)
+	{
+		if ($fileinfo->isFile())
+		{
+			$files[$fileinfo->getMTime()] = $fileinfo->getFilename();
+		}
+
+	}
+	krsort($files);
+	
+
+	foreach ($files as $timestamp => $file) :
+		
+		// break up the filepath to get the filename without extension
+		$page = pathinfo($file);
+		
+		// get month
+		$month = date('F', $timestamp);
+
 
 			switch ($month) {
 				case 'January':
-					$jan .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$jan .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'February':
-					$feb .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$feb .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'March':
-					$mar .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$mar .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'April':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'May':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'June':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'July':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'August':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'September':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'October':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'November':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 
 				case 'December':
-					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $pagename[1] . '/">' . $pagename[1] . '</a></li>' . "\n";
+					$apr .= '<li><a href="' . BASE_URL . '/blog/' . $page['filename'] . '/">' . $page['filename'] . '</a></li>' . "\n";
 					break;
 				
 				default:
 					# code...
 					break;
-			}
-			
-		}
-		$blogposts->next();
-	}
+			}			
+
+	endforeach;
+
+
 
 	if($jan != '')
 		echo '<h3>January</h3>',
