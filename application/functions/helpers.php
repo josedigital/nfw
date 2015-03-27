@@ -298,10 +298,21 @@ function arg($n) {
 * NAV
 * @param string tag to surround image e.g. li, div, span
 */
-function makenav()
+function makenav($nav=NULL)
 {
-	$dir_writable = substr(sprintf('%o', fileperms(VIEWS)), -4) == "0775" ? "true" : "false";
-	echo $dir_writable;
+	if(!is_array($nav))
+	{
+		section($nav);
+	}
+	else
+	{
+		$list = '<ul>';
+		foreach ($nav as $url=>$page) {
+			$list .= '<li><a href="'.$url.'/">'.$page.'</a></li>';
+		}
+		$list .= '</ul>';
+		echo $list;		
+	}
 }
 
 function getnav() 
