@@ -91,9 +91,9 @@ foreach ($messages as $key => $value) :
 
 	
 	// store variables
-	$subject			=	$m['headers']['subject'];
-	$text				=	$m['text'];
-	$parts				=	explode("---", $text);
+	$subject				=	$m['headers']['subject'];
+	$text					=	$m['text'];
+	$parts					=	explode("---", $text);
 
 	// parse subject to get subdirectory, section and url
 	if (strpos($subject,'/') !== false) :
@@ -110,10 +110,10 @@ foreach ($messages as $key => $value) :
 	endif;
 	
 
-	
+	// change 'section' to 'sections' : easier on the user i think
 	if($dir == 'section') 
-		$dir = 'sections';
-		$pagename = $page['url'];
+		$dir 				= 'sections';
+		$pagename 			= $page['url'];
 
 	
 	// iterate through $parts and save as key=>value in $page
@@ -121,18 +121,19 @@ foreach ($messages as $key => $value) :
 		if(count($parts)<2) break;
 		$m = explode(':', $part, 2);
 		$page[trim($m[0])] = trim($m[1]);
-
 	endforeach;
 
 
 
 
 	// handle markdown and shorttags
-	$body		=	$pd->text($text); 			// use $pd to parse markdown
-	$body		=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
-	$body		=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
-	$body		=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body
-	$page['body'] = $body;
+	$body					=	$pd->text($text); 			// use $pd to parse markdown
+	$body					=	str_replace('"', '\"', $body); 		// delimt any double quotes inside the body
+	$body					=	str_replace('[[', '" . ', $body); 	// capture [[ ]] to allow helper functions in body
+	$body					=	str_replace(']]', ' . "', $body); 	// capture [[ ]] to allow helper functions in body
+	$page['body'] 			= 	$body;
+
+
 
 
 	// if we have a subdirectory
@@ -147,17 +148,17 @@ foreach ($messages as $key => $value) :
 
 		// prepend unix timestamp if $dir is blog
 		if($dir == 'blog') :
-			$date 		= new DateTime();
-			$timestamp 	= $date->getTimestamp();			
-			$pagename 	= $timestamp . '_' . $page['url'];
+			$date 			= 	new DateTime();
+			$timestamp 		= 	$date->getTimestamp();			
+			$pagename 		= 	$timestamp . '_' . $page['url'];
 
 			// created date variable
-			$created  = gmdate("d \of M Y @ H:i:s", $timestamp);			
+			$page['created'] = 	gmdate("d \of M Y @ H:i:s", $timestamp);		
 		endif;
 
 
 		// create page in subdirectory
-		$newpage = fopen($subdirectory . $pagename . ".html", "w") or die("Unable to open file!");
+		$newpage 	= 	fopen($subdirectory . $pagename . ".html", "w") or die("Unable to open file!");
 
 	else :
 		// just create normal page at VIEWS root
@@ -207,6 +208,7 @@ $baseurl 	= BASE_URL;
 $url 		= (isset($dir)) ? $dir.'/'.$page['url'] : $page['url'];
 $done = <<<EOT
 <html>
+<title>emphatic fetching email</title>
 	<body>
 		<h1>$num messages fetched.</h1>
 		<p>the following attachments were saved: <ul> $attachments </ul> and are available with their respective <a href="$baseurl/helpers/functions">helper fucntions</a>.</p>
