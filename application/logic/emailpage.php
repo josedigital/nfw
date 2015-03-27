@@ -114,6 +114,7 @@ foreach ($messages as $key => $value) :
 	if($dir == 'section') 
 		$dir 				= 	'sections';
 		$pagename 			= 	$page['url'];
+		$page['body']		=	$text;
 
 	
 	// iterate through $parts and save as key=>value in $page
