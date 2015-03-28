@@ -86,7 +86,6 @@ get('/about/', function() {
 
 /* create routes dynamically - read from views directory and/or subdirectories thereof
 ======================================================================================= */
-$ignore = array('.', '..', '.DS_Store', '.gitignore', '.git', '.svn', '.htaccess');
 $views = new RecursiveDirectoryIterator(VIEWS);
 foreach (new RecursiveIteratorIterator($views) as $filename => $file)
 {
