@@ -51,4 +51,4 @@ $body = '
 </ul>
 ';
 
-include(VIEWS . "/includes/blank.inc");?>
+include(VIEWS . "/templates/blank.inc");?>

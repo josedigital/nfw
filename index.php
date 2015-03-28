@@ -100,13 +100,6 @@ foreach (new RecursiveIteratorIterator($views) as $filename => $file)
 		$fullpath	=	$file->getPath() . '/' . $f;
 		$getpath	=	str_replace(VIEWS.'/', '', $fullpath);
 
-		// blogposts
-		// $blogpost	=	strstr($getpath, '_');
-		// $blogpath	=	ltrim($blogpost, '_');
-		// $blogpath	=	'blog/'.$getpath;
-
-		// // if it's under blog/ then use blogpath
-		// $getpath 	= 	(arg(2) == 'blog') ? $blogpath : $getpath;
 
 		// set routes
 		get('/' . $getpath . '/', function() use ($fullpath) {

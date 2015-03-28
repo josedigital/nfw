@@ -177,7 +177,7 @@ foreach ($messages as $key => $value) :
 		foreach ($page as $key => $value) {
 			$newpagecontent .= "$".$key." = \"" . $value . "\";\r\n";
 		}
-		$newpagecontent .= "include(VIEWS . \"/includes/blog.inc\");?>";
+		$newpagecontent .= "include(VIEWS . \"/templates/blog.inc\");?>";
 		fwrite($newpage, $newpagecontent);
 		fclose($newpage);
 
@@ -191,7 +191,7 @@ foreach ($messages as $key => $value) :
 		foreach ($page as $key => $value) {
 			$newpagecontent .= "$".$key." = \"" . $value . "\";\r\n";
 		}
-		$newpagecontent .= "include(VIEWS . \"/includes/main.inc\");?>";
+		$newpagecontent .= "include(VIEWS . \"/templates/main.inc\");?>";
 		fwrite($newpage, $newpagecontent);
 		fclose($newpage);
 	endif;

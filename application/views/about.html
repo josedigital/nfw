@@ -24,7 +24,7 @@ $fname = explode('_',$str);
 // echo '<pre>'; print_r($fname); echo '</pre>';
 echo gmdate("d \of M Y @ H:i:s", $fname[0]);
 
-$file = file_get_contents(VIEWS . "/includes/myfile.txt");
+$file = file_get_contents(VIEWS . "/templates/myfile.txt");
 $file_content = explode("---", $file);
 ?>
 
